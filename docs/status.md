@@ -27,7 +27,7 @@ Branch: `claude/wake-lock-demo`.
 Later the same day:
 - Added "Used on this page" list with MDN links.
 - Added `.claude/settings.json` allow list (fewer permission prompts). Merge to `main` to use it everywhere.
-- Step 2 done: proof test (`proof.js`, `heartbeat.js`). It records the first "page hidden" or timer gap during a test run. Tested with a fake clock in headless Chromium.
+- Step 2 done: proof test (`proof.js`, `heartbeat.js`). Step 1 measures the sleep time (lock off, up to 10 min). Step 2 tests the lock for that time + 30 s. The sleep time is saved in localStorage. Tested with a fake clock in headless Chromium.
 
 Not finished:
 - Test on a real iPhone and Android phone: tab switch, auto-off, sound, favicon, proof test.

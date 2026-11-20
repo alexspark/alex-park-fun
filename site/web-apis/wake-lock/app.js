@@ -113,15 +113,16 @@ const proof = createProofTest({
   log,
   sound: { done: () => settings.sound && playDone() },
   els: {
-    withLock: $("proof-with"),
-    withoutLock: $("proof-without"),
+    measure: $("proof-measure"),
+    test: $("proof-test"),
     cancel: $("proof-cancel"),
     status: $("proof-status"),
+    sleep: $("proof-sleep"),
     results: $("proof-results"),
   },
 });
-$("proof-with").addEventListener("click", unlock);
-$("proof-without").addEventListener("click", unlock);
+$("proof-measure").addEventListener("click", unlock);
+$("proof-test").addEventListener("click", unlock);
 
 startHeartbeat((gap) => {
   proof.gap(gap);
