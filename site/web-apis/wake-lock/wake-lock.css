@@ -1,0 +1,83 @@
+/* Styles for the Wake Lock demo only. */
+
+body { --state: var(--off); }
+body[data-state="on"] { --state: var(--on); }
+body[data-state="paused"] { --state: var(--paused); }
+body[data-state="error"] { --state: var(--error); }
+
+.control { border-color: var(--state); border-width: 2px; text-align: center; }
+
+.big {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+  width: 100%; min-height: 72px;
+  font-size: 1.25rem; font-weight: 600;
+  border: 2px solid var(--state); border-radius: 999px;
+}
+.big[aria-pressed="true"] { background: var(--state); color: #fff; }
+.big:disabled { opacity: 0.5; cursor: not-allowed; }
+.dot {
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--state); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--state);
+}
+body[data-state="on"] .dot { animation: pulse 2s ease-in-out infinite; }
+.big[aria-pressed="true"] .dot { background: #fff; }
+@keyframes pulse { 50% { transform: scale(1.3); } }
+@media (prefers-reduced-motion: reduce) { body[data-state="on"] .dot { animation: none; } }
+
+.status { font-weight: 600; margin: 12px 0 4px; }
+.timers { color: var(--muted); margin: 0 0 12px; min-height: 1.5em; font-variant-numeric: tabular-nums; }
+.timers span + span::before { content: "· "; }
+.timers span:empty, .timers span:empty + span::before { display: none; }
+
+.chips { border: 0; padding: 0; margin: 0 0 12px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.chips legend { width: 100%; margin-bottom: 6px; color: var(--muted); font-size: 0.9rem; }
+.chips label {
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px;
+  background: var(--bg); cursor: pointer;
+}
+.chips input { position: absolute; opacity: 0; pointer-events: none; }
+.chips label:has(input:checked) { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.chips label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.switches { display: grid; gap: 8px; text-align: left; }
+.switches label { display: flex; gap: 8px; align-items: flex-start; }
+.switches input { margin-top: 0.3em; }
+
+.legend, .checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.legend li { display: flex; gap: 8px; align-items: flex-start; }
+.swatch { flex: none; width: 14px; height: 14px; border-radius: 50%; margin-top: 0.35em; }
+.swatch.on { background: var(--on); }
+.swatch.paused { background: var(--paused); }
+.swatch.off { background: var(--off); }
+.checks li { display: flex; gap: 8px; }
+
+.tools { display: flex; gap: 8px; }
+
+.steps { padding-left: 1.4em; margin: 0 0 12px; display: grid; gap: 4px; }
+.proof-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.proof-buttons button { min-height: 48px; font-weight: 600; }
+.proof-buttons button:disabled { opacity: 0.5; cursor: not-allowed; }
+#proof-status { text-align: center; }
+#proof-cancel { display: block; margin: 0 auto 12px; }
+#proof-cancel[hidden] { display: none; }
+.proof-results { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
+.proof-results li { padding: 8px 12px; border-radius: 8px; background: var(--bg); border-left: 4px solid var(--off); }
+.proof-results li.stayed { border-color: var(--on); }
+.proof-results li.failed { border-color: var(--error); }
+.proof-results li.measured { border-color: var(--accent); }
+.proof-sleep { text-align: center; margin: 8px 0 0; }
+
+h3 { font-size: 1rem; margin: 16px 0 4px; }
+.used { padding-left: 1.2em; margin: 0; display: grid; gap: 6px; }
+.used code { overflow-wrap: anywhere; }
+.log {
+  list-style: none; padding: 0; margin: 8px 0 0;
+  max-height: 320px; overflow-y: auto;
+  font: 0.85rem/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.log li { padding: 4px 0 4px 8px; border-left: 3px solid var(--line); margin-bottom: 2px; overflow-wrap: anywhere; }
+.log li.on { border-color: var(--on); }
+.log li.paused { border-color: var(--paused); }
+.log li.off { border-color: var(--off); }
+.log li.error { border-color: var(--error); color: var(--error); }
+.log time { color: var(--muted); }
