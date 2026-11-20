@@ -48,23 +48,16 @@
 
     <section class="card" aria-labelledby="proof-h">
       <h2 id="proof-h">Prove it works</h2>
-      <p>Your device turns the screen off after some time with no touch. This test checks if the lock stops that.</p>
+      <p>Your device turns the screen off after some time with no touch. This test finds that time. Then it checks if the lock stops it.</p>
       <ol class="steps">
-        <li>Pick a test time. It must be longer than your auto-lock time.</li>
-        <li>Press a test button. Put the device down. Do not touch it.</li>
-        <li>Come back after the test time. If the screen is off, wake the device.</li>
-        <li>Do the other test. Compare the results.</li>
+        <li>Press <b>1. Measure</b>. Put the device down. Do not touch it. When the screen turns off, wake the device.</li>
+        <li>Press <b>2. Test the lock</b>. Put the device down again. Come back after the time it shows.</li>
       </ol>
-      <fieldset class="chips">
-        <legend>Test time</legend>
-        <label><input type="radio" name="proof-minutes" value="1"> 1 min</label>
-        <label><input type="radio" name="proof-minutes" value="2" checked> 2 min</label>
-        <label><input type="radio" name="proof-minutes" value="5"> 5 min</label>
-      </fieldset>
       <div class="proof-buttons">
-        <button id="proof-without" type="button">Test without lock</button>
-        <button id="proof-with" type="button">Test with lock</button>
+        <button id="proof-measure" type="button">1. Measure</button>
+        <button id="proof-test" type="button">2. Test the lock</button>
       </div>
+      <p id="proof-sleep" class="hint proof-sleep"></p>
       <p id="proof-status" class="status" role="status" aria-live="polite"></p>
       <button id="proof-cancel" type="button" hidden>Cancel test</button>
       <ol id="proof-results" class="proof-results"></ol>
