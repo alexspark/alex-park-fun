@@ -29,6 +29,8 @@ The owner often works from a phone with Claude Code remote sessions. The owner i
 - Work on a branch. Push the branch. A push publishes a preview in approximately 1 minute.
 - At the end of a session, give the preview URL: `https://alexspark.github.io/alex-park-fun/preview/<branch>/`. In the branch name, each character that is not `A-Z a-z 0-9 . _ -` changes to `-`. Example: `claude/new-idea` becomes `claude-new-idea`.
 - Merge to `main` to update the live site.
+- Each pull request description starts with the preview URL for its branch. Add the direct link to each new or changed page too.
+- If you cannot open the pull request yourself, give the owner a GitHub "compare" link with the title and description filled in.
 
 ## At the end of each session
 
