@@ -30,3 +30,4 @@ function play(freqs) {
 
 export const playOn = () => play([523, 784]); // up: C5, G5
 export const playOff = () => play([784, 392]); // down: G5, G4
+export const playDone = () => play([523, 659, 784]); // up three steps: C5, E5, G5

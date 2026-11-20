@@ -1,8 +1,11 @@
 import { WakeLock } from "./lock.js";
-import { unlock, playOn, playOff } from "./sound.js";
+import { unlock, playOn, playOff, playDone } from "./sound.js";
 import { showState } from "./favicon.js";
 import { runChecks } from "./checks.js";
 import { createLog } from "./log.js";
+import { startHeartbeat } from "./heartbeat.js";
+import { createProofTest } from "./proof.js";
+import { mmss } from "./time.js";
 
 const BASE_TITLE = "Wake Lock demo";
 const $ = (id) => document.getElementById(id);
@@ -90,19 +93,44 @@ lock.addEventListener("change", (e) => {
   render();
 });
 
+let hiddenAt = null;
+let lastVisibilityChange = 0;
 document.addEventListener("visibilitychange", () => {
-  log.add(document.hidden ? "Tab hidden." : "Tab visible.");
+  lastVisibilityChange = Date.now();
+  if (document.hidden) {
+    hiddenAt = Date.now();
+    log.add("Page hidden (tab switch, app switch, or screen off).");
+  } else {
+    log.add(hiddenAt ? `Page visible again after ${mmss(Date.now() - hiddenAt)}.` : "Page visible.");
+    hiddenAt = null;
+  }
+});
+
+// ---- Proof test and timer gaps ----
+
+const proof = createProofTest({
+  lock,
+  log,
+  sound: { done: () => settings.sound && playDone() },
+  els: {
+    withLock: $("proof-with"),
+    withoutLock: $("proof-without"),
+    cancel: $("proof-cancel"),
+    status: $("proof-status"),
+    results: $("proof-results"),
+  },
+});
+$("proof-with").addEventListener("click", unlock);
+$("proof-without").addEventListener("click", unlock);
+
+startHeartbeat((gap) => {
+  proof.gap(gap);
+  // Hidden pages have slow timers, so gaps there are normal and the log already shows them.
+  // Log only gaps where the page stayed visible.
+  if (!hiddenAt && lastVisibilityChange < gap.start) log.add(`Timer stopped for ${mmss(gap.ms)}. The screen was off or the page was frozen.`, "paused");
 });
 
 // ---- Display ----
-
-function mmss(ms) {
-  const s = Math.max(0, Math.round(ms / 1000));
-  const h = Math.floor(s / 3600);
-  const m = String(Math.floor((s % 3600) / 60)).padStart(h ? 2 : 1, "0");
-  const sec = String(s % 60).padStart(2, "0");
-  return h ? `${h}:${m}:${sec}` : `${m}:${sec}`;
-}
 
 function render() {
   const state = lock.state;
@@ -155,6 +183,9 @@ $("copy").addEventListener("click", async () => {
     "",
     "Checks:",
     ...checkResults.map((c) => `- ${c.ok === true ? "yes" : c.ok === false ? "NO" : "?"}  ${c.label}: ${c.note}`),
+    "",
+    "Proof test results (newest first):",
+    proof.text(),
     "",
     "Log (newest first):",
     log.text(),
