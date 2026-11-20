@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Edit(site/**)",
+      "Edit(docs/**)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git checkout*)",
+      "Bash(git switch*)",
+      "Bash(git branch*)",
+      "Bash(git fetch*)",
+      "Bash(git pull*)",
+      "Bash(git merge*)",
+      "Bash(python3 -m http.server*)",
+      "Bash(pkill -f *http.server*)",
+      "Bash(node /private/tmp/claude-501/*)",
+      "Bash(curl -s -o /dev/null *)",
+      "Bash(ls*)",
+      "Bash(find site*)",
+      "Bash(find docs*)",
+      "Bash(grep *)",
+      "Bash(cat *)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * --force*)",
+      "Bash(git push * -f*)"
+    ]
+  }
+}
