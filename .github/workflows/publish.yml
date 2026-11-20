@@ -1,0 +1,122 @@
+# Publish the site to the gh-pages branch. GitHub Pages serves gh-pages.
+#
+# - Push to the default branch (main): copy site/ to the root of gh-pages.
+# - Push to a different branch:        copy site/ to gh-pages/preview/<branch>/.
+# - Delete a branch:                   remove gh-pages/preview/<branch>/.
+#
+# This workflow uses no third-party actions. It uses only bash and git.
+# This keeps the supply chain small. Do not add "uses:" steps.
+
+name: Publish
+
+on:
+  push:
+    branches-ignore: [gh-pages]
+  delete:
+
+permissions:
+  contents: write
+
+# Run one publish at a time, so that two pushes do not conflict on gh-pages.
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Publish to gh-pages
+        env:
+          EVENT: ${{ github.event_name }}
+          REF_TYPE: ${{ github.event.ref_type }}
+          REF_NAME: ${{ github.event_name == 'delete' && github.event.ref || github.ref_name }}
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+          SHA: ${{ github.sha }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          if [ "$EVENT" = "delete" ] && [ "$REF_TYPE" != "branch" ]; then
+            echo "Deleted ref is not a branch. Nothing to do."
+            exit 0
+          fi
+
+          # Make the branch name safe for a folder name and a URL.
+          # Example: "claude/new-idea" becomes "claude-new-idea".
+          SAFE=$(printf '%s' "$REF_NAME" | tr -c 'A-Za-z0-9._-' '-')
+          URL="https://x-access-token:${TOKEN}@github.com/${REPO}.git"
+
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          # 1. Get the exact commit that was pushed.
+          if [ "$EVENT" = "push" ]; then
+            git init -q src
+            git -C src fetch -q --depth 1 "$URL" "$SHA"
+            git -C src checkout -q FETCH_HEAD
+            if [ ! -d src/site ]; then
+              echo "This commit has no site/ folder. Nothing to publish."
+              exit 0
+            fi
+          fi
+
+          # 2. Get the gh-pages branch. Make it if it does not exist.
+          if git ls-remote --exit-code --heads "$URL" gh-pages >/dev/null; then
+            git clone -q --depth 1 --branch gh-pages "$URL" out
+          else
+            git init -q -b gh-pages out
+            git -C out remote add origin "$URL"
+          fi
+
+          # 3. Change the files.
+          if [ "$REF_NAME" = "$DEFAULT_BRANCH" ]; then
+            if [ "$EVENT" = "delete" ]; then exit 0; fi
+            # Remove the old live site, but keep the previews.
+            find out -mindepth 1 -maxdepth 1 ! -name .git ! -name preview -exec rm -rf {} +
+            cp -R src/site/. out/
+            WHERE="https://${OWNER}.github.io/${REPO#*/}/"
+          else
+            rm -rf "out/preview/$SAFE"
+            if [ "$EVENT" = "push" ]; then
+              mkdir -p "out/preview/$SAFE"
+              cp -R src/site/. "out/preview/$SAFE/"
+              printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%MZ)" "${SHA:0:7}" > "out/preview/$SAFE/.preview-info"
+            fi
+            WHERE="https://${OWNER}.github.io/${REPO#*/}/preview/$SAFE/"
+          fi
+
+          # 4. Make the list of previews at /preview/.
+          mkdir -p out/preview
+          {
+            echo '<!doctype html><meta charset="utf-8">'
+            echo '<meta name="viewport" content="width=device-width, initial-scale=1">'
+            echo '<title>Previews</title>'
+            echo '<style>body{font:16px/1.5 system-ui,sans-serif;max-width:40rem;margin:2rem auto;padding:0 16px}li{margin:.5rem 0}small{color:#777}</style>'
+            echo '<h1>Branch previews</h1><p><a href="../">Live site (main)</a></p><ul>'
+            for d in out/preview/*/; do
+              [ -d "$d" ] || continue
+              name=$(basename "$d")
+              info=$(cat "$d/.preview-info" 2>/dev/null || true)
+              echo "<li><a href=\"./$name/\">$name</a> <small>$info</small></li>"
+            done
+            echo '</ul>'
+          } > out/preview/index.html
+
+          # Tell GitHub Pages to serve the files as they are (no Jekyll).
+          touch out/.nojekyll
+
+          # 5. Commit and push.
+          git -C out add -A
+          if git -C out diff --cached --quiet; then
+            echo "No change."
+          else
+            git -C out commit -q -m "Publish $REF_NAME ($EVENT) ${SHA:0:7}"
+            git -C out push -q origin gh-pages
+          fi
+
+          echo "URL: $WHERE"
+          echo "### Published: $WHERE" >> "$GITHUB_STEP_SUMMARY"
