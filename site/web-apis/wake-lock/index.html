@@ -72,6 +72,51 @@
       <p class="hint">The API does not say why it released a lock. The page guesses the reason.</p>
       <ol id="log" class="log"></ol>
     </section>
+
+    <section class="card" aria-labelledby="used-h">
+      <h2 id="used-h">Used on this page</h2>
+      <p class="hint">Links go to MDN. Each line says how this page uses it.</p>
+
+      <h3>Wake Lock</h3>
+      <ul class="used">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WakeLock/request"><code>navigator.wakeLock.request()</code></a> asks the browser to keep the screen on.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WakeLockSentinel"><code>WakeLockSentinel</code></a> is the object that <code>request()</code> gives back. It is your handle to the lock.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WakeLockSentinel/release"><code>sentinel.release()</code></a> turns the lock off.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WakeLockSentinel/release_event"><code>release</code> event</a> fires when the lock turns off, for any reason.</li>
+      </ul>
+
+      <h3>Page state</h3>
+      <ul class="used">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event"><code>visibilitychange</code> event</a> fires when you leave or return to the tab. The page uses it to turn the lock on again.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/hidden"><code>document.hidden</code></a> is true when the tab is not visible.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/title"><code>document.title</code></a> shows the state in the tab title.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#icon"><code>&lt;link rel="icon"&gt;</code></a> with an <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data">SVG <code>data:</code> URL</a> draws the colored tab icon.</li>
+      </ul>
+
+      <h3>Checks</h3>
+      <ul class="used">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/isSecureContext"><code>isSecureContext</code></a> tells if the page uses HTTPS.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy">Permissions Policy</a> can block the lock in an iframe or with a header.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query"><code>navigator.permissions.query()</code></a> asks the browser for the permission state.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getBattery"><code>navigator.getBattery()</code></a> reads the battery level. Only Chrome and Edge have it.</li>
+      </ul>
+
+      <h3>Sound, saving, copy</h3>
+      <ul class="used">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API">Web Audio API</a>: an <a href="https://developer.mozilla.org/en-US/docs/Web/API/AudioContext"><code>AudioContext</code></a>, an <a href="https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode"><code>OscillatorNode</code></a> and a <a href="https://developer.mozilla.org/en-US/docs/Web/API/GainNode"><code>GainNode</code></a> make the tones. No sound files.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage"><code>localStorage</code></a> remembers your settings in this browser.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Clipboard/writeText"><code>navigator.clipboard.writeText()</code></a> copies the report.</li>
+      </ul>
+
+      <h3>JavaScript and CSS</h3>
+      <ul class="used">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">JavaScript modules</a> split the code into files.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget"><code>EventTarget</code></a> and <a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomEvent"><code>CustomEvent</code></a> let the lock code tell the page about changes.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/setInterval"><code>setInterval()</code></a> updates the timers each second.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:has"><code>:has()</code></a> styles the selected auto-off button.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion"><code>prefers-reduced-motion</code></a> stops the pulse if you turn off motion.</li>
+      </ul>
+    </section>
   </main>
 </body>
 </html>

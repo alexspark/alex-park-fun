@@ -1,5 +1,9 @@
 // Checks that tell if the Wake Lock API can work on this page.
 // Each check gives { label, ok, note }. ok is true, false, or null (unknown).
+// MDN: https://developer.mozilla.org/en-US/docs/Web/API/Window/isSecureContext
+//      https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Permissions_Policy
+//      https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query
+//      https://developer.mozilla.org/en-US/docs/Web/API/Navigator/getBattery
 
 export async function runChecks() {
   const checks = [];

@@ -12,6 +12,7 @@ Update this file at the end of each session. Put the newest entry at the top.
 - Web API demos live in `site/web-apis/<api>/`. The list page is `site/web-apis/index.html`. Shared styles are in `site/web-apis/demo.css`.
 - Wake Lock demo: no video fallback. Release reasons are guesses, and the page says so.
 - Replies and docs use short, simple STE-style English.
+- Each demo ends with a "Used on this page" list. Each item has an MDN link and one line on how the page uses it. Code comments also link to MDN. Reason: the owner reviews the code and wants to learn the APIs.
 
 ## Log
 

@@ -1,5 +1,7 @@
 // Short tones made with the Web Audio API. No sound files.
 // Browsers allow audio only after a user action, so call unlock() in a click handler.
+// MDN: https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API
+//      https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay (why audio needs a user action)
 
 let ctx = null;
 
