@@ -24,9 +24,13 @@ Branch: `claude/wake-lock-demo`.
 - Wake Lock page has: start/stop button, auto-off (5/15/30/60 min), turn on again after a tab switch, start/stop sounds (Web Audio), favicon and title that show the state, support checks, event log, copy report, MDN/spec links.
 - Tested in headless Chromium at 360px: start, stop, checks. Headless tabs do not become hidden, so the tab-switch test was not done.
 
+Later the same day:
+- Added "Used on this page" list with MDN links.
+- Added `.claude/settings.json` allow list (fewer permission prompts). Merge to `main` to use it everywhere.
+- Step 2 done: proof test (`proof.js`, `heartbeat.js`). It records the first "page hidden" or timer gap during a test run. Tested with a fake clock in headless Chromium.
+
 Not finished:
-- Test on a real iPhone and Android phone: tab switch, auto-off, sound, favicon.
-- Step 2: proof test (find timer gaps when the screen sleeps).
+- Test on a real iPhone and Android phone: tab switch, auto-off, sound, favicon, proof test.
 - Step 3: lab (two locks, blocked iframe) and code panel.
 
 Questions: Is the URL OK? Keep the tool at the top?

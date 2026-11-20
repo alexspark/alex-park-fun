@@ -46,6 +46,31 @@
       </div>
     </section>
 
+    <section class="card" aria-labelledby="proof-h">
+      <h2 id="proof-h">Prove it works</h2>
+      <p>Your device turns the screen off after some time with no touch. This test checks if the lock stops that.</p>
+      <ol class="steps">
+        <li>Pick a test time. It must be longer than your auto-lock time.</li>
+        <li>Press a test button. Put the device down. Do not touch it.</li>
+        <li>Come back after the test time. If the screen is off, wake the device.</li>
+        <li>Do the other test. Compare the results.</li>
+      </ol>
+      <fieldset class="chips">
+        <legend>Test time</legend>
+        <label><input type="radio" name="proof-minutes" value="1"> 1 min</label>
+        <label><input type="radio" name="proof-minutes" value="2" checked> 2 min</label>
+        <label><input type="radio" name="proof-minutes" value="5"> 5 min</label>
+      </fieldset>
+      <div class="proof-buttons">
+        <button id="proof-without" type="button">Test without lock</button>
+        <button id="proof-with" type="button">Test with lock</button>
+      </div>
+      <p id="proof-status" class="status" role="status" aria-live="polite"></p>
+      <button id="proof-cancel" type="button" hidden>Cancel test</button>
+      <ol id="proof-results" class="proof-results"></ol>
+      <p class="hint">How it works: the page runs a 1-second timer. When the screen turns off, the page becomes hidden and the timer stops. The test records the first of these.</p>
+    </section>
+
     <section class="card" aria-labelledby="tab-h">
       <h2 id="tab-h">Look at the tab</h2>
       <p>The tab icon and title show the state:</p>
@@ -91,6 +116,13 @@
         <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/hidden"><code>document.hidden</code></a> is true when the tab is not visible.</li>
         <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/title"><code>document.title</code></a> shows the state in the tab title.</li>
         <li><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel#icon"><code>&lt;link rel="icon"&gt;</code></a> with an <a href="https://developer.mozilla.org/en-US/docs/Web/URI/Reference/Schemes/data">SVG <code>data:</code> URL</a> draws the colored tab icon.</li>
+      </ul>
+
+      <h3>Proof test</h3>
+      <ul class="used">
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout#timeouts_in_inactive_tabs">Timers in hidden tabs</a> run slowly or stop. The test uses this to detect that the screen went off.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/now"><code>Date.now()</code></a> reads the wall clock. It keeps moving while the device sleeps, so the page can measure the gap.</li>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/pointerdown_event"><code>pointerdown</code> event</a> tells the test that you touched the screen. A touch resets the sleep timer.</li>
       </ul>
 
       <h3>Checks</h3>
