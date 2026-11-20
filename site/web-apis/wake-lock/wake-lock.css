@@ -20,6 +20,7 @@ body[data-state="error"] { --state: var(--error); }
   background: var(--state); border: 2px solid #fff; box-shadow: 0 0 0 1px var(--state);
 }
 body[data-state="on"] .dot { animation: pulse 2s ease-in-out infinite; }
+.big[aria-pressed="true"] .dot { background: #fff; }
 @keyframes pulse { 50% { transform: scale(1.3); } }
 @media (prefers-reduced-motion: reduce) { body[data-state="on"] .dot { animation: none; } }
 
