@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wake Lock demo</title>
+  <meta name="description" content="Keep your screen awake, and see how the Screen Wake Lock API works.">
+  <link id="favicon" rel="icon" href="data:,">
+  <link rel="stylesheet" href="../../style.css">
+  <link rel="stylesheet" href="../demo.css">
+  <link rel="stylesheet" href="wake-lock.css">
+  <script type="module" src="app.js"></script>
+</head>
+<body data-state="off">
+  <main>
+    <nav class="crumbs"><a href="../">Web API demos</a></nav>
+    <h1>Screen Wake Lock</h1>
+    <p class="lede">Keep the screen on while you read, cook, or present. The page also shows what the API does.</p>
+    <p class="links">
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API">MDN docs</a>
+      <a href="https://w3c.github.io/screen-wake-lock/">Spec</a>
+      <a href="https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API#browser_compatibility">Browser support</a>
+    </p>
+
+    <section class="card control" aria-labelledby="control-h">
+      <h2 id="control-h" class="sr-only">Control</h2>
+      <button id="toggle" class="big" type="button" aria-pressed="false">
+        <span class="dot" aria-hidden="true"></span>
+        <span id="toggle-label">Keep screen awake</span>
+      </button>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+      <p class="timers"><span id="held"></span> <span id="left"></span></p>
+
+      <fieldset class="chips">
+        <legend>Auto-off</legend>
+        <label><input type="radio" name="minutes" value="0" checked> Never</label>
+        <label><input type="radio" name="minutes" value="5"> 5 min</label>
+        <label><input type="radio" name="minutes" value="15"> 15 min</label>
+        <label><input type="radio" name="minutes" value="30"> 30 min</label>
+        <label><input type="radio" name="minutes" value="60"> 1 hr</label>
+      </fieldset>
+
+      <div class="switches">
+        <label><input type="checkbox" id="sound" checked> Sound on start and stop</label>
+        <label><input type="checkbox" id="reacquire" checked> Turn on again when I come back to the tab</label>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="tab-h">
+      <h2 id="tab-h">Look at the tab</h2>
+      <p>The tab icon and title show the state:</p>
+      <ul class="legend">
+        <li><span class="swatch on"></span> Green: on.</li>
+        <li><span class="swatch paused"></span> Yellow: paused. The browser always turns the lock off when you leave the tab. The page turns it on again when you come back.</li>
+        <li><span class="swatch off"></span> Grey: off.</li>
+      </ul>
+    </section>
+
+    <section class="card" aria-labelledby="checks-h">
+      <h2 id="checks-h">Can this page use the lock?</h2>
+      <ul id="checks" class="checks"><li>Checking…</li></ul>
+    </section>
+
+    <section class="card" aria-labelledby="log-h">
+      <div class="row">
+        <h2 id="log-h">Event log</h2>
+        <span class="tools">
+          <button id="copy" type="button">Copy report</button>
+          <button id="clear" type="button">Clear</button>
+        </span>
+      </div>
+      <p class="hint">The API does not say why it released a lock. The page guesses the reason.</p>
+      <ol id="log" class="log"></ol>
+    </section>
+  </main>
+</body>
+</html>
