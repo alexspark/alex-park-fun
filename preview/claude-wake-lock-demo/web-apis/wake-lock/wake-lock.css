@@ -52,6 +52,10 @@ body[data-state="on"] .dot { animation: pulse 2s ease-in-out infinite; }
 .checks li { display: flex; gap: 8px; }
 
 .tools { display: flex; gap: 8px; }
+
+h3 { font-size: 1rem; margin: 16px 0 4px; }
+.used { padding-left: 1.2em; margin: 0; display: grid; gap: 6px; }
+.used code { overflow-wrap: anywhere; }
 .log {
   list-style: none; padding: 0; margin: 8px 0 0;
   max-height: 320px; overflow-y: auto;

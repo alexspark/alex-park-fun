@@ -1,6 +1,15 @@
 // Wraps the Screen Wake Lock API.
 // States: "off", "on", "paused" (you want the lock, but the tab is hidden), "error".
 // The API does not say why a lock was released. This class guesses the reason.
+//
+// MDN:
+//   Screen Wake Lock API  https://developer.mozilla.org/en-US/docs/Web/API/Screen_Wake_Lock_API
+//   WakeLockSentinel      https://developer.mozilla.org/en-US/docs/Web/API/WakeLockSentinel
+//   visibilitychange      https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event
+//   EventTarget           https://developer.mozilla.org/en-US/docs/Web/API/EventTarget
+//
+// A "sentinel" is the object that request() gives back. It is your handle to one lock.
+// The browser always releases the lock when the tab is hidden. So we request it again on visibilitychange.
 
 export class WakeLock extends EventTarget {
   supported = "wakeLock" in navigator;
